@@ -12,6 +12,7 @@ WORKDIR /app
 
 # Add to PATH
 ENV PATH /app/node_modules/.bin:$PATH
+ENV CI true
 
 # Add package.json from upstream
 ADD package.json /app
