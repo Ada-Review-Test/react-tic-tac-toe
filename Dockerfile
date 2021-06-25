@@ -13,5 +13,7 @@ ADD $SUBMISSION_SUBFOLDER /app
 # for Testing
 # ADD . .
 
+ADD ./test.sh .
+
 RUN yarn install --frozen-lockfile
 RUN chmod +x test.sh
