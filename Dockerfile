@@ -1,21 +1,29 @@
-FROM node:alpine
+# Install latest version of node (older versions are not guaranteed to work with Learn)
+FROM node:latest
 
-LABEL maintainer="chris@adadev.org"
+# Install bash (must be installed for alpine builds)
+# RUN apk update && apk add bash
 
+# Create directory for app
 RUN mkdir /app
 
+# Set as current directory for RUN, ADD, COPY commands
 WORKDIR /app
 
-ARG SUBMISSION_SUBFOLDER
-ADD $SUBMISSION_SUBFOLDER/package.json .
-RUN yarn install  --verbose
+# Add to PATH
+ENV PATH /app/node_modules/.bin:$PATH
 
-# Add entire student fork (overwrites previously added files)
+# Add package.json from upstream
+ADD package.json /app
+
+# Install dependencies
+RUN yarn install
+
+# Add entire student fork (overwrites previously added package.json)
+ARG SUBMISSION_SUBFOLDER
 ADD $SUBMISSION_SUBFOLDER /app
 
-# for Testing
-# ADD . .
-
-ADD ./test.sh .
+# Overwrite files in student fork with upstream files
+ADD test.sh /app
 
 RUN chmod +x test.sh
